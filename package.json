@@ -1,0 +1,33 @@
+{
+  "name": "threejs-spline-loop-sample",
+  "version": "1.0.0",
+  "description": "An alternate spline.getPoint appropriately called getLoopPoint. This effectively makes Splines looped and smoothly seamless.",
+  "main": "index.js",
+  "license": "MIT",
+  "author": {
+    "name": "Tomasz Dysinski",
+    "email": "oz@bunnybones.com",
+    "url": "https://github.com/bunnybones1"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "loadandrunscripts": "^1.0.0",
+    "threejs-managed-view": "^2.3.0"
+  },
+  "scripts": {
+    "test": "beefy test.js --live --open"
+  },
+  "keywords": [
+    "threejs",
+    "spline",
+    "loop"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/bunnybones1/threejs-spline-loop-sample.git"
+  },
+  "homepage": "https://github.com/bunnybones1/threejs-spline-loop-sample",
+  "bugs": {
+    "url": "https://github.com/bunnybones1/threejs-spline-loop-sample/issues"
+  }
+}
