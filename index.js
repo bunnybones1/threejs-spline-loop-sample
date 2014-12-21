@@ -44,8 +44,47 @@ function getLoopPoint ( k ) {
 
 };
 
-function splineLoop(spline) {
-	spline.getLoopPoint = getLoopPoint;
+getCachedLoopPointNotReady = function(k) {
+	console.warn("You haven't run cache() on this Spline yet. You really ought to.");
+	return this.getLoopPoint(k);
 }
 
-module.exports = splineLoop;
+cache = function(segments) {
+	this.cacheSegments = segments
+	var linearLoopCache = this.linearLoopCache = [];
+	for (var i = 0; i < segments; i++) {
+		var coord = this.getLoopPoint(i/segments);
+		var vert = new THREE.Vector3(coord.x, coord.y, coord.z);
+		linearLoopCache[i] = vert;
+	};
+	this.getCachedLoopPoint = getCachedLoopPoint;
+}
+
+updateCache = function() {
+	for (var i = 0, len = this.cacheSegments; i < len; i++) {
+		var coord = this.getLoopPoint(i/len);
+		this.linearLoopCache[i].copy(coord);
+	};
+}
+
+var sample = new THREE.Vector3();
+var sample2 = new THREE.Vector3();
+getCachedLoopPoint = function(k) {
+	var cacheTotal = this.cacheSegments;
+	var indexFloat = (k % 1) * cacheTotal;
+	var index = ~~indexFloat;
+	var index2 = (index+1) % cacheTotal;
+	var weight = indexFloat - index;
+	sample.copy(this.linearLoopCache[index]).multiplyScalar(1-weight);
+	sample2.copy(this.linearLoopCache[index2]).multiplyScalar(weight);
+	return sample.add(sample2);
+}
+
+function splineLoopDecorator(spline) {
+	spline.getLoopPoint = getLoopPoint;
+	spline.cache = cache;
+	spline.updateCache = updateCache;
+	spline.getCachedLoopPoint = getCachedLoopPointNotReady;
+}
+
+module.exports = splineLoopDecorator;

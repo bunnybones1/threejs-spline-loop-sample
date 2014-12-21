@@ -56,9 +56,10 @@ var onReady = function() {
 	    color: colorCameraRailOld
 	});
 
+	spline.cache(100);
 	for (var i = 0; i < splineSegs; i++) {
 		// var coord = spline.getPoint(i/splineSegs);
-		var coord = spline.getLoopPoint(i/splineSegs);
+		var coord = spline.getCachedLoopPoint(i/splineSegs);
 		var coordOld = spline.getPoint(i/splineSegs);
 		var vert = new THREE.Vector3(coord.x, coord.y, coord.z);
 		var vertOld = new THREE.Vector3(coordOld.x, coordOld.y, coordOld.z);
@@ -70,6 +71,32 @@ var onReady = function() {
 	var splineMeshOld = new THREE.Line(splineGeometryOld, splineMaterialOld);
 	scene.add(splineMeshOld);
 	splineMeshOld.position.y += .0125;
+
+	var movingPointHelper = railPointHelpers[2];
+	samplePosition = movingPointHelper.position.clone();
+	var movement = new THREE.Vector3();
+	view.renderManager.onEnterFrame.add(function() {
+		var time = (new Date()).getTime() * .001;
+		movement.set(
+			Math.cos(time),
+			Math.sin(time),
+			Math.cos(time)
+		)
+		movingPointHelper.position.copy(samplePosition).add(movement);
+		movingPointHelper.point.copy(movingPointHelper.position);
+		for (var i = 0; i < splineSegs; i++) {
+			// var coord = spline.getPoint(i/splineSegs);
+			var coord = spline.getCachedLoopPoint(i/splineSegs);
+			var coordOld = spline.getPoint(i/splineSegs);
+			var vert = new THREE.Vector3(coord.x, coord.y, coord.z);
+			var vertOld = new THREE.Vector3(coordOld.x, coordOld.y, coordOld.z);
+			spline.updateCache();
+			splineGeometry.vertices[i].copy(vert);
+			splineGeometryOld.vertices[i].copy(vertOld);
+			splineGeometry.verticesNeedUpdate = true;
+			splineGeometryOld.verticesNeedUpdate = true;
+		};
+	})
 
 }
 
