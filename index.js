@@ -71,6 +71,7 @@ updateCache = function() {
 var sample = new THREE.Vector3();
 var sample2 = new THREE.Vector3();
 getCachedLoopPoint = function(k) {
+	k = ((k % 1) + 1) % 1;
 	var cacheTotal = this.cacheSegments;
 	var indexFloat = (k % 1) * cacheTotal;
 	var index = ~~indexFloat;
