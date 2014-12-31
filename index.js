@@ -18,6 +18,7 @@ function interpolate( p0, p1, p2, p3, t, t2, t3 ) {
 };
 
 function getLoopPoint ( k ) {
+	k = ((k % 1) + 1) % 1;
 	len = this.points.length;
 	point = ( len ) * k;
 	intPoint = Math.floor( point );
