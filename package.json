@@ -1,6 +1,6 @@
 {
   "name": "threejs-spline-loop-sample",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "An alternate spline.getPoint appropriately called getLoopPoint. This effectively makes Splines looped and smoothly seamless.",
   "main": "index.js",
   "license": "MIT",
