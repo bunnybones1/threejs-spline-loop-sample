@@ -45,12 +45,12 @@ function getLoopPoint ( k ) {
 
 };
 
-getCachedLoopPointNotReady = function(k) {
+function getCachedLoopPointNotReady(k) {
 	console.warn("You haven't run cache() on this Spline yet. You really ought to.");
 	return this.getLoopPoint(k);
 }
 
-cache = function(segments) {
+function cache(segments) {
 	this.cacheSegments = segments
 	var linearLoopCache = this.linearLoopCache = [];
 	for (var i = 0; i < segments; i++) {
@@ -61,7 +61,7 @@ cache = function(segments) {
 	this.getCachedLoopPoint = getCachedLoopPoint;
 }
 
-updateCache = function() {
+function updateCache() {
 	for (var i = 0, len = this.cacheSegments; i < len; i++) {
 		var coord = this.getLoopPoint(i/len);
 		this.linearLoopCache[i].copy(coord);
@@ -70,7 +70,7 @@ updateCache = function() {
 
 var sample = new THREE.Vector3();
 var sample2 = new THREE.Vector3();
-getCachedLoopPoint = function(k) {
+function getCachedLoopPoint(k) {
 	k = ((k % 1) + 1) % 1;
 	var cacheTotal = this.cacheSegments;
 	var indexFloat = (k % 1) * cacheTotal;
